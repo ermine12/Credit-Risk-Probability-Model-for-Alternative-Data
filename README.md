@@ -39,7 +39,7 @@ In regulated credit decisioning, the trade-offs are typically:
 
 - **Stability & monitoring**
   - Scorecards often behave more predictably under population shifts and are easier to recalibrate.
-  - Boosting can be more sensitive to drift and interactions, increasing monitoring and retraining needs.
+ 
 
 - **Operational constraints**
   - Scorecards are easier to implement consistently across channels and to provide actionable decline reasons.
