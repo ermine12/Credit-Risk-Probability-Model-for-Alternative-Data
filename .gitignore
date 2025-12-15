@@ -1,0 +1,36 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.egg-info/
+dist/
+build/
+
+# Test artifacts
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data files (ignore all content inside data/, but keep the directory structure)
+data/*
+!data/.gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Models and other artifacts
+models/
+artifacts/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+data/*
