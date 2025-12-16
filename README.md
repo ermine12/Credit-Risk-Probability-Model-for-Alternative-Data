@@ -12,7 +12,7 @@ Basel II formalizes a risk-sensitive approach to capital: banks are expected to 
 ### Why a proxy target is necessary (and its business risks)
 In many alternative-data settings we do not observe a clean, contractual **"default"** outcome (e.g., 90+ DPD, charge-off). To train supervised models, we create a **proxy label** that approximates credit distress using available signals (e.g., severe delinquency indicators, write-down events, collections, or behavioral patterns).
 
-Using a proxy is necessary to:
+Using a proxy is necessary to
 
 - **Enable learning** from historical observations when true default is unavailable.
 - **Operationalize risk** into a measurable target aligned with a business objective (reject/approve, pricing, limits).
