@@ -220,3 +220,18 @@ def build_features(df: pd.DataFrame) -> np.ndarray:
 def build_proxy_target(df: pd.DataFrame, delinquency_column: str) -> pd.Series:
     y = pd.to_numeric(df[delinquency_column], errors="coerce").fillna(0)
     return (y >= 90).astype(int)
+
+
+def calculate_rfm(df: pd.DataFrame) -> pd.DataFrame:
+    df['TransactionStartTime'] = pd.to_datetime(df['TransactionStartTime'])
+    snapshot_date = df['TransactionStartTime'].max() + pd.DateOffset(days=1)
+    rfm = df.groupby('CustomerId').agg({
+        'TransactionStartTime': lambda x: (snapshot_date - x.max()).days,
+        'TransactionId': 'count',
+        'Value': 'sum'
+    }).rename(columns={
+        'TransactionStartTime': 'Recency',
+        'TransactionId': 'Frequency',
+        'Value': 'Monetary'
+    })
+    return rfm

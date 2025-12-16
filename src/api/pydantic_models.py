@@ -5,9 +5,11 @@ from typing import Dict
 from pydantic import BaseModel, Field
 
 
-class PredictRequest(BaseModel):
-    features: Dict[str, float] = Field(default_factory=dict)
+class PredictionRequest(BaseModel):
+    Recency: float
+    Frequency: float
+    Monetary: float
 
 
-class PredictResponse(BaseModel):
-    prob_default: float
+class PredictionResponse(BaseModel):
+    risk_probability: float

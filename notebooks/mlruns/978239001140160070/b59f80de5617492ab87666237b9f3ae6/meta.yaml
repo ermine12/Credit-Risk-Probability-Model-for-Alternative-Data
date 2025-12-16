@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/ELITEBOOK/Documents/Projects/AI_engineering/Credit%20Risk%20Probability%20Model%20for%20Alternative%20Data/notebooks/mlruns/978239001140160070/b59f80de5617492ab87666237b9f3ae6/artifacts
+end_time: 1765870833499
+entry_point_name: ''
+experiment_id: '978239001140160070'
+lifecycle_stage: active
+run_id: b59f80de5617492ab87666237b9f3ae6
+run_name: Logistic_Regression_GridSearch
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1765870810236
+status: 3
+tags: []
+user_id: ELITEBOOK

@@ -1,33 +1,38 @@
-from __future__ import annotations
-
-from pathlib import Path
-
-import joblib
+import mlflow
 import pandas as pd
 from fastapi import FastAPI, HTTPException
-
-from src.api.pydantic_models import PredictRequest, PredictResponse
+from src.api.pydantic_models import PredictionRequest, PredictionResponse
 
 app = FastAPI(title="Credit Risk API")
 
-DEFAULT_MODEL_PATH = Path("models/model.joblib")
+# --- MLflow Model Loading ---
+MLFLOW_TRACKING_URI = "http://127.0.0.1:5000"
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
+MODEL_NAME = "CreditRiskModel"
+MODEL_STAGE = "production"
+
+try:
+    model = mlflow.sklearn.load_model(model_uri=f"models:/{MODEL_NAME}/{MODEL_STAGE}")
+except Exception as e:
+    model = None
+    print(f"Error loading model: {e}")
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok"}
+    """Health check endpoint."""
+    return {"status": "ok", "model_loaded": model is not None}
 
+@app.post("/predict", response_model=PredictionResponse)
+def predict(request: PredictionRequest) -> PredictionResponse:
+    """
+    Accepts customer data and returns the credit risk probability.
+    """
+    if model is None:
+        raise HTTPException(status_code=503, detail="Model not available. Please check MLflow setup.")
 
-@app.post("/predict", response_model=PredictResponse)
-def predict(req: PredictRequest) -> PredictResponse:
-    if not DEFAULT_MODEL_PATH.exists():
-        raise HTTPException(status_code=503, detail="Model not found. Train and save a model to models/model.joblib")
+    input_df = pd.DataFrame([request.dict()])
 
-    model = joblib.load(DEFAULT_MODEL_PATH)
+    risk_probability = model.predict_proba(input_df)[:, 1][0]
 
-    # The pipeline expects a DataFrame, so we convert the request features
-    df = pd.DataFrame([req.dict()["features"]])
-
-    # The pipeline handles all preprocessing
-    prob_default = float(model.predict_proba(df)[:, 1][0])
-    return PredictResponse(prob_default=prob_default)
+    return PredictionResponse(risk_probability=risk_probability)
